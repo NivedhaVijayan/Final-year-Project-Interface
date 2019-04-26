@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation page</title>
+    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+
+ <center><h1>Bimodal table of contents generation for Video Navigation from Educational videos.</h1>
+ <h2>Sample Video.mp4</h2>
+
+
+     <video id="myvideo" width="420">
+
+    <source src="videos/sample.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+     </video>
+
+
+     <table>
+          <tr>
+            <th>Topic</th>
+            <th>Time stamp</th>
+            <th>Goto</th>
+          </tr>
+         {% for topic in topics %}
+             <tr>
+             <td style="font-size: 25px">
+                 {% for foo in topic.topic %}
+                     {% if forloop.counter0 < 7 %}
+                         {{ foo }} -
+                     {% endif %}
+                 {% endfor %}
+
+             </td>
+                 <td style="font-size: 25px">
+                     {{ topic.timestamp }}
+             </td>
+                <td>
+                    <Button  id="jump{{ forloop.counter0 }}" style="height: 40px; width: 120px;">
+                        Go to
+                    </Button>
+                </td>
+             </tr>
+         {% endfor %}
+     </table>
+
+     <br>
+     <br><br>
+
+
+    <h2>Anchor Points</h2>
+
+
+
+
+
+     <table>
+          <tr>
+            <th>Anchor Point</th>
+            <th>Image</th>
+            <th>Goto</th>
+          </tr>
+         {% for anchor in anchor_list %}
+             <tr>
+             <td style="font-size: 25px">
+               {{ anchor.type | title }}
+             </td>
+                 <td>
+
+
+    <img src="/images/{{ anchor.image }}"  style="height: 200px; width: 200px"/>
+             </td>
+                <td>
+                    <Button  id="ju{{ forloop.counter0 }}" style="height: 40px; width: 120px;">
+                        Go to
+                    </Button>
+                </td>
+             </tr>
+         {% endfor %}
+     </table>
+ </center>
+
+
+
+
+<div>
+{#    <p>#}
+{#        <button id="playme">Play/Pause Video</button>#}
+{#    </p>#}
+{#    <p>#}
+{#        <button id="jump">Jump to 7</button>#}
+{#    </p>#}
+</div>
+
+
+<script>
+    var myvideo = document.getElementById('myvideo'),
+    playbutton = document.getElementById('playme'),
+
+        {% for topic in topics %}
+            jumplink = document.getElementById('jump{{ forloop.counter0 }}');
+            jumplink.addEventListener("click", function (event) {
+            event.preventDefault();
+            myvideo.play();
+            myvideo.pause();
+            myvideo.currentTime = {{ topic.timestamp }};
+            myvideo.play();
+        }, false);
+
+        {% endfor %}
+
+    {% for anchor in anchor_list %}
+            jumplink = document.getElementById('ju{{ forloop.counter0 }}');
+            jumplink.addEventListener("click", function (event) {
+            event.preventDefault();
+            myvideo.play();
+            myvideo.pause();
+            myvideo.currentTime = {{ anchor.timestamp }};
+            myvideo.play();
+        }, false);
+    {% endfor %}
+
+
+// only in to demonstrate video
+playbutton.addEventListener("click", function () {
+    if (myvideo.paused) {
+        myvideo.play();
+    } else {
+        myvideo.pause();
+    }
+}, false);
+</script>
+</body>
+</html>

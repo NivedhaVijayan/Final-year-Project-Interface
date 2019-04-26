@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FYP Project</title>
+    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+    <center><h1>Bimodal table of contents generation for Video Navigation from Educational videos.</h1>
+
+        <table>
+  <tr>
+    <th>Video Name</th>
+    <th>Video</th>
+    <th>Processed</th>
+    <th>View/Process</th>
+  </tr>
+            {% for video in videos %}
+                <tr>
+                    <td>{{ video.name }}</td>
+                    <td>
+                        <video width="320" height="240" >
+                            <source src="/videos/sample.mp4" type="video/mp4"> Your browser does not support the video tag.
+                        </video>
+                    </td>
+                    <td>{{ video.is_processed }}</td>
+                    <td>
+                        {% if video.is_processed %}
+                            <Button onclick="window.location.href = '/navigation';" style="height: 40px; width: 120px;">
+                           View -->
+                            </Button>
+                            {% else %}
+                            <Button onclick="window.location.href = '/process/{{ video.name }}';" style="height: 40px; width: 120px;">
+                            Process -->
+                            </Button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+</table>
+
+        </center>
+</body>
+</html>
